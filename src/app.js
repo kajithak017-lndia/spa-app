@@ -3,7 +3,7 @@ import Navbar from "./components/navbar";
 import Home from "./components/home";
 import About from "./components/about";
 import Contact from "./components/contact";
-import { HashRouter as BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./styles.css";
 
 function App() {
@@ -20,8 +20,12 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={<Home setUsername={setUsername} />} />
-          <Route path="/about" element={<About username={username} />} />
-          <Route path="/contact" element={<Contact username={username} />} />
+          {username && (
+            <>
+              <Route path="/about" element={<About username={username} />} />
+              <Route path="/contact" element={<Contact username={username} />} />
+            </>
+          )}
         </Routes>
       </div>
     </BrowserRouter>

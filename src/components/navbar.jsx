@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 function Navbar({ username }) {
   return (
     <nav className="navbar">
-      <div>
-        <Link to="/">Home</Link>
-        {username && <Link to="/about">About</Link>}
-        {username && <Link to="/contact">Contact</Link>}
-      </div>
-      <div>{username && <span>Logged in as: {username}</span>}</div>
+      <Link to="/">Home</Link>
+      {username && (
+        <>
+          <Link to="/about">About Us</Link>
+          <Link to="/contact">Contact</Link>
+        </>
+      )}
+      <span className="nav-username">{username && `Hi, ${username}`}</span>
     </nav>
   );
 }

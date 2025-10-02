@@ -3,8 +3,7 @@ name: Deploy React App
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:  # optional: allows manual trigger
+      - main   # or your default branch name
 
 jobs:
   build-and-deploy:
