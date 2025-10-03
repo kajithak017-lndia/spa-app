@@ -8,7 +8,7 @@ function Contact({ username }) {
 
   const handleSubmit = () => {
     if (input.trim() !== "") {
-      setFeedbacks([{ text: input, user: username }, ...feedbacks]);
+      setFeedbacks([{ text: input, user: username || "Anonymous" }, ...feedbacks]);
       setInput("");
     }
   };
@@ -20,12 +20,15 @@ function Contact({ username }) {
         placeholder="Write your feedback..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        rows={4}
+        style={{ width: "100%", maxWidth: "500px" }}
       />
       <br />
       <button onClick={handleSubmit}>Submit Feedback</button>
 
       <h2>Feedbacks</h2>
       <FeedbackList feedbacks={feedbacks} showAll={showAll} />
+
       {feedbacks.length > 10 && (
         <button onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show Less" : "See All Feedbacks"}
