@@ -1,21 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Navbar({ username }) {
+function Navbar({ username, onLogout, onExit }) {
   return (
     <nav className="navbar">
-      <Link to="/" className="nav-link">Home</Link>
+      <Link to="/">Home</Link>
+      <Link to="/about">About Us</Link>
+      <Link to="/contact">Contact</Link>
 
-      {username && (
-        <>
-          <Link to="/about" className="nav-link">About Us</Link>
-          <Link to="/contact" className="nav-link">Contact</Link>
-        </>
-      )}
-
-      <span className="nav-username">
-        {username ? `Hi, ${username}` : ""}
-      </span>
+      <div style={{ marginLeft: "auto", display: "flex", gap: "10px", alignItems: "center" }}>
+        {username && <span>Hi, {username}</span>}
+        {username && (
+          <>
+            <button onClick={onLogout} style={{ cursor: "pointer" }}>Logout</button>
+            <button onClick={onExit} style={{ cursor: "pointer" }}>Exit</button>
+          </>
+        )}
+      </div>
     </nav>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FeedbackList from "./feedbacklist";
 
 function Contact({ username }) {
@@ -6,11 +6,20 @@ function Contact({ username }) {
   const [input, setInput] = useState("");
   const [showAll, setShowAll] = useState(false);
 
+  // Load feedbacks from localStorage on component mount
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+    setFeedbacks(stored.reverse()); // reverse to show newest first
+  }, []);
+
   const handleSubmit = () => {
-    if (input.trim() !== "") {
-      setFeedbacks([{ text: input, user: username || "Anonymous" }, ...feedbacks]);
-      setInput("");
-    }
+    if (input.trim() === "") return;
+
+    const newFeedback = { user: username || "Anonymous", text: input };
+    const updatedFeedbacks = [newFeedback, ...feedbacks];
+    setFeedbacks(updatedFeedbacks);
+    localStorage.setItem("feedbacks", JSON.stringify(updatedFeedbacks.reverse())); // reverse to store oldest first
+    setInput("");
   };
 
   return (
@@ -20,19 +29,25 @@ function Contact({ username }) {
         placeholder="Write your feedback..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        rows={4}
-        style={{ width: "100%", maxWidth: "500px" }}
+        style={{ width: "100%", minHeight: "100px" }}
       />
       <br />
-      <button onClick={handleSubmit}>Submit Feedback</button>
+      <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+        Submit Feedback
+      </button>
 
       <h2>Feedbacks</h2>
-      <FeedbackList feedbacks={feedbacks} showAll={showAll} />
-
-      {feedbacks.length > 10 && (
-        <button onClick={() => setShowAll(!showAll)}>
-          {showAll ? "Show Less" : "See All Feedbacks"}
-        </button>
+      {feedbacks.length === 0 ? (
+        <p>No feedbacks yet.</p>
+      ) : (
+        <>
+          <FeedbackList feedbacks={feedbacks} showAll={showAll} />
+          {feedbacks.length > 10 && (
+            <button onClick={() => setShowAll(!showAll)}>
+              {showAll ? "Show Less" : "See All Feedbacks"}
+            </button>
+          )}
+        </>
       )}
     </div>
   );
